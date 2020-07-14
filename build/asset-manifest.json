@@ -1,0 +1,30 @@
+{
+  "files": {
+    "main.css": "/static/css/main.dc2bd88e.chunk.css",
+    "main.js": "/static/js/main.ac56c7ea.chunk.js",
+    "main.js.map": "/static/js/main.ac56c7ea.chunk.js.map",
+    "runtime-main.js": "/static/js/runtime-main.7d861018.js",
+    "runtime-main.js.map": "/static/js/runtime-main.7d861018.js.map",
+    "static/js/2.40843742.chunk.js": "/static/js/2.40843742.chunk.js",
+    "static/js/2.40843742.chunk.js.map": "/static/js/2.40843742.chunk.js.map",
+    "index.html": "/index.html",
+    "precache-manifest.18697596eb930f815848ed00afca2e65.js": "/precache-manifest.18697596eb930f815848ed00afca2e65.js",
+    "service-worker.js": "/service-worker.js",
+    "static/css/main.dc2bd88e.chunk.css.map": "/static/css/main.dc2bd88e.chunk.css.map",
+    "static/js/2.40843742.chunk.js.LICENSE.txt": "/static/js/2.40843742.chunk.js.LICENSE.txt",
+    "static/media/BudgetTrckrOFF.png": "/static/media/BudgetTrckrOFF.ed0abdec.png",
+    "static/media/CodingResume.pdf": "/static/media/CodingResume.7ada0b5a.pdf",
+    "static/media/Druggler.png": "/static/media/Druggler.25ed2e8f.png",
+    "static/media/EmployeeDB.png": "/static/media/EmployeeDB.1a15151d.png",
+    "static/media/Movie-Meme-Mash.png": "/static/media/Movie-Meme-Mash.724dd3b3.png",
+    "static/media/SocialEarPiece.png": "/static/media/SocialEarPiece.a7055318.png",
+    "static/media/WrkOutTrkrOFF.png": "/static/media/WrkOutTrkrOFF.b2b863a5.png",
+    "static/media/profile.jpg": "/static/media/profile.71b162bc.jpg"
+  },
+  "entrypoints": [
+    "static/js/runtime-main.7d861018.js",
+    "static/js/2.40843742.chunk.js",
+    "static/css/main.dc2bd88e.chunk.css",
+    "static/js/main.ac56c7ea.chunk.js"
+  ]
+}
