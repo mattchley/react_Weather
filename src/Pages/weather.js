@@ -8,7 +8,7 @@ import API from '../Utils/API';
 function Weather() {
 
     const [search, setSearch] = useState();
-    const [weather, setWeather] = useState([]);
+    const [weather, setWeather] = useState({});
 
     const handleSubmit = e => {
         e.preventDefault();
@@ -16,35 +16,38 @@ function Weather() {
     }
 
     const citySearch = search => {
-        API.getWeather(search)
-            .then(res => {
-                console.log(res.data)
-                let name = res.data.name;
-                let temp = res.data.main.temp
-                let humidity = res.data.main.humidity
-                let wind = res.data.wind.speed;
-                let icon = res.data.weather[0].icon;
-                let iconURL = `https://openweathermap.org/img/w/${icon}png`
+        async function fetchData() {
 
-                setWeather([
+
+            const searchRes = await API.getWeather(search)
+
+            const uvRes = await API.getUV(searchRes.data.coord.lat, searchRes.data.coord.lon)
+
+            const fiveDayRes = await API.getFiveDay(searchRes.data.coord.lat, searchRes.data.coord.lon)
+
+            console.log(fiveDayRes.data)
+            setWeather(weather => (
+
+                {
                     ...weather,
-                    {
-                        
-                        name: name,
-                        temp: temp,
-                        humidity: humidity,
-                        wind: wind,
-                        iconURL: iconURL
-                    }
-                ])
+                    name: searchRes.data.name,
+                    temp: searchRes.data.main.temp,
+                    humidity: searchRes.data.main.humidity,
+                    wind: searchRes.data.wind.speed,
+                    icon: `https://openweathermap.org/img/w/${searchRes.data.weather[0].icon}png`,
+                    uvIndex: uvRes.data.value
+                    // fiveday:
 
-                //  //    UV is a seperate call, Variables here
-                //  let lat = res.coord.lat;
-                //  let lon = res.coord.lon;
-                //  let uvURL = `https://api.openweathermap.org/data/2.5/uvi?appid=3a92bc0a0ca29575a3569a00c0268022&lat=${lat}&lon=${lon}`;
-                // setWeather(res.data)
-            })
+
+                }
+            )
+            )
+        }
+        fetchData()
     }
+
+
+
 
     return (
         <Container>
@@ -60,15 +63,17 @@ function Weather() {
                 <Grid item md={6} xs={12}>
                     <h1>Results</h1>
 
-                    {weather.map(x =>
-                        <div>
-                            <p>{x.name}</p>
-                            <p>{x.temp}</p>
-                            <p>{x.humidity}</p>
-                            <p>{x.wind}</p>
-                            <img src={x.iconURL} />
-                        </div>
-                    )}
+
+                    <div>
+                        <p>{weather.name}</p>
+                        <p>{weather.temp}</p>
+                        <p>{weather.humidity}</p>
+                        <p>{weather.wind}</p>
+                        <p>{weather.uvIndex}</p>
+                        <img src={weather.icon} />
+
+                    </div>
+
 
                 </Grid>
             </Grid>
@@ -78,3 +83,4 @@ function Weather() {
 }
 
 export default Weather
+                    //         icon: `https://openweathermap.org/img/w/${icon}png`,
