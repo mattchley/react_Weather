@@ -10,9 +10,10 @@ function Weather() {
 
     const [search, setSearch] = useState();
     const [weather, setWeather] = useState([]);
+    const [searched, setSearched] = useState([])
 
     const handleSubmit = e => {
-        e.preventDefault();
+        e.preventDefault()
         citySearch(search)
     }
 
@@ -34,7 +35,12 @@ function Weather() {
             }
 
 
-
+            setSearched([
+                ...searched,
+                {
+                    name: searchRes.data.name
+                }
+            ])
             setWeather([
                 ...weather,
                 {
@@ -48,7 +54,7 @@ function Weather() {
                     fiveDay: fiveDayArray
                 }
             ])
-            console.log()
+
         }
         fetchData()
     }
@@ -65,12 +71,26 @@ function Weather() {
                     <input id="citySearch"
                         onChange={(event, value) => setSearch(document.getElementById("citySearch").value)} />
                     <button onClick={handleSubmit}>Search Cities</button>
+                    <Grid container spacing={1}>
+                        {searched.length ? (
+                            <div>
+                                {
+                                    searched.map(x =>
+                                        <li>
+                                            {x.name}
+                                        </li>
+                                    )
+                                }
+                            </div>
+                        ) : (
+                                <p>Which city will you search?</p>
+                            )}
+                    </Grid>
                 </Grid>
                 <Grid item md={10} xs={12}>
                     <h1>Results</h1>
                     {weather.map(x =>
-                        <Grid item md={12} xs={12} >
-
+                        <Grid item md={12} xs={12}>
                             <p>{x.name}</p>
                             <p>{x.temp}</p>
                             <p>{x.humidity}</p>
@@ -101,7 +121,7 @@ function Weather() {
                     </Grid>
                 </Grid>
             </Grid>
-        </Container >
+        </Container>
     )
 }
 
