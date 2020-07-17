@@ -8,23 +8,25 @@ import API from '../Utils/API';
 function Weather() {
 
     const [search, setSearch] = useState();
-    const [weather, setWeather] = useState({});
+    const [weather, setWeather] = useState([]);
 
     const handleSubmit = e => {
         e.preventDefault();
         citySearch(search)
     }
 
+    const handleTest = e => {
+        console.log(weather)
+
+    }
+
     const citySearch = search => {
         async function fetchData() {
             let fiveDayArray = await []
             const searchRes = await API.getWeather(search)
-
             const uvRes = await API.getUV(searchRes.data.coord.lat, searchRes.data.coord.lon)
-
             const fiveDayRes = await API.getFiveDay(searchRes.data.coord.lat, searchRes.data.coord.lon)
             for (let index of fiveDayRes.data.list) {
-                console.log(index)
                 fiveDayArray.push(
                     {
                         time: index.dt_txt,
@@ -33,24 +35,22 @@ function Weather() {
                 )
             }
 
-// need a systematic comparison of browser time to array time
+            // need a systematic comparison of browser time to array time
 
-            setWeather(weather => (
-
+            setWeather([
+                ...weather,
                 {
-                    ...weather,
+
                     name: searchRes.data.name,
                     temp: searchRes.data.main.temp,
                     humidity: searchRes.data.main.humidity,
                     wind: searchRes.data.wind.speed,
                     icon: `https://openweathermap.org/img/w/${searchRes.data.weather[0].icon}png`,
                     uvIndex: uvRes.data.value,
-                    fiveday: fiveDayArray
-
-
+                    fiveDay: fiveDayArray
                 }
-            ))
-            console.log(fiveDayArray)
+            ])
+            console.log()
         }
         fetchData()
     }
@@ -73,14 +73,27 @@ function Weather() {
                     <h1>Results</h1>
 
 
-                    <div>
-                        <p>{weather.name}</p>
-                        <p>{weather.temp}</p>
-                        <p>{weather.humidity}</p>
-                        <p>{weather.wind}</p>
-                        <p>{weather.uvIndex}</p>
-                        <img src={weather.icon} />
-                    </div>
+                    <button onClick={handleTest}>Test</button>
+                    {weather.map(x =>
+                        <div>
+                            <p>{x.name}</p>
+                            <p>{x.temp}</p>
+                            <p>{x.humidity}</p>
+                            <p>{x.wind}</p>
+                            <p>{x.uvIndex}</p>
+                            <img src={x.icon} />
+                            {
+                                x.fiveDay.map(y =>
+                                    <div>
+                                        <p>{y.time}</p>
+                                        <p>{y.temp}</p>
+                                    </div>
+                                )
+                            }
+
+                        </div>
+                    )}
+
 
 
                 </Grid>
