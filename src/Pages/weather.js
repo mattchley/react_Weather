@@ -9,12 +9,21 @@ import API from '../Utils/API';
 function Weather() {
 
     const [search, setSearch] = useState();
-    const [weather, setWeather] = useState([]);
+    const [weather, setWeather] = useState({
+        name: '',
+        temp: '',
+        humidity: '',
+        wind: '',
+        icon: '',
+        uvIndex: '',
+        fiveDay: []
+    });
     const [searched, setSearched] = useState([])
 
     const handleSubmit = e => {
         e.preventDefault()
         citySearch(search)
+        console.log(weather.fiveDay)
     }
 
     const citySearch = search => {
@@ -41,8 +50,7 @@ function Weather() {
                     name: searchRes.data.name
                 }
             ])
-            setWeather([
-                ...weather,
+            setWeather(
                 {
 
                     name: searchRes.data.name,
@@ -53,7 +61,7 @@ function Weather() {
                     uvIndex: uvRes.data.value,
                     fiveDay: fiveDayArray
                 }
-            ])
+            )
 
         }
         fetchData()
@@ -89,35 +97,38 @@ function Weather() {
                 </Grid>
                 <Grid item md={10} xs={12}>
                     <h1>Results</h1>
-                    {weather.map(x =>
-                        <Grid item md={12} xs={12}>
-                            <p>{x.name}</p>
-                            <p>{x.temp}</p>
-                            <p>{x.humidity}</p>
-                            <p>{x.wind}</p>
-                            <p>{x.uvIndex}</p>
-                            <img src={x.icon} />
+                    {/* make this pretty */}
+                    <Grid item md={12} xs={12}>
+                        <p>{weather.name}</p>
+                        <p>{weather.temp}</p>
+                        <p>{weather.humidity}</p>
+                        <p>{weather.wind}</p>
+                        <p>{weather.uvIndex}</p>
+                        <img src={weather.icon} />
 
-                        </Grid>
-                    )}
+                    </Grid>
                 </Grid>
             </Grid>
             <Grid container spacing={3}>
                 <Grid item md={2} />
                 <Grid item md={10} xs={12}>
                     <Grid container spacing={3}>
-                        {weather.map(x =>
-                            x.fiveDay.map(y => (
+                        {/* filter out every7 indexs */}
+                        {weather.fiveDay.length ? (
+                            weather.fiveDay.map(y => (
                                 <Grid item xs={2}>
                                     <Card>
                                         <p>{y.time}</p>
                                         <p>{y.temp}</p>
                                     </Card>
                                 </Grid>
-                            )
-                            )
-
-                        )}
+                            ))) : (
+                                <Grid item xs={12}>
+                                    <Card>
+                                        Five Day Forecast Here
+                                    </Card>
+                                </Grid>
+                            )}
                     </Grid>
                 </Grid>
             </Grid>
