@@ -17,15 +17,24 @@ function Weather() {
 
     const citySearch = search => {
         async function fetchData() {
-
-
+            let fiveDayArray = await []
             const searchRes = await API.getWeather(search)
 
             const uvRes = await API.getUV(searchRes.data.coord.lat, searchRes.data.coord.lon)
 
             const fiveDayRes = await API.getFiveDay(searchRes.data.coord.lat, searchRes.data.coord.lon)
+            for (let index of fiveDayRes.data.list) {
+                console.log(index)
+                fiveDayArray.push(
+                    {
+                        time: index.dt_txt,
+                        temp: index.main.temp
+                    }
+                )
+            }
 
-            console.log(fiveDayRes.data)
+// need a systematic comparison of browser time to array time
+
             setWeather(weather => (
 
                 {
@@ -35,13 +44,13 @@ function Weather() {
                     humidity: searchRes.data.main.humidity,
                     wind: searchRes.data.wind.speed,
                     icon: `https://openweathermap.org/img/w/${searchRes.data.weather[0].icon}png`,
-                    uvIndex: uvRes.data.value
-                    // fiveday:
+                    uvIndex: uvRes.data.value,
+                    fiveday: fiveDayArray
 
 
                 }
-            )
-            )
+            ))
+            console.log(fiveDayArray)
         }
         fetchData()
     }
@@ -71,7 +80,6 @@ function Weather() {
                         <p>{weather.wind}</p>
                         <p>{weather.uvIndex}</p>
                         <img src={weather.icon} />
-
                     </div>
 
 
@@ -83,4 +91,3 @@ function Weather() {
 }
 
 export default Weather
-                    //         icon: `https://openweathermap.org/img/w/${icon}png`,
