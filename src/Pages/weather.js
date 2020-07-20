@@ -23,7 +23,13 @@ function Weather() {
     const handleSubmit = e => {
         e.preventDefault()
         citySearch(search)
-        console.log(weather.fiveDay)
+    }
+
+    const handleNewSubmit = e => {
+        e.preventDefault()
+        const newSearch = e.target.getAttribute("name")
+        console.log(e)
+        citySearch(newSearch)
     }
 
     const handleDelete = e => {
@@ -40,7 +46,6 @@ function Weather() {
             const fiveDayRes = await API.getFiveDay(searchRes.data.coord.lat, searchRes.data.coord.lon)
             // need a systematic comparison of browser time to array time
             for (let index of fiveDayRes.data.list) {
-                console.log(index)
                 fiveDayArray.push(
                     {
                         key: index.dt,
@@ -93,12 +98,20 @@ function Weather() {
                                 {
                                     searched.map(x =>
                                         <div>
-                                            <li>
+
+                                            <button
+                                                name={x.name}
+                                                onClick={handleNewSubmit}
+                                            >
                                                 {x.name}
-                                                <button
-                                                    name={x.name}
-                                                    onClick={handleDelete}>Delete</button>
-                                            </li>
+                                            </button>
+                                            <button
+                                                name={x.name}
+                                                onClick={handleDelete}
+                                            >
+                                                Delete
+                                                </button>
+
                                         </div>
                                     )
                                 }
