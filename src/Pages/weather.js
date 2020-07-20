@@ -26,6 +26,12 @@ function Weather() {
         console.log(weather.fiveDay)
     }
 
+    const handleDelete = e => {
+        e.preventDefault()
+        const name = e.target.getAttribute("name");
+        setSearched(searched.filter(searched => searched.name !== name))
+    }
+
     const citySearch = search => {
         async function fetchData() {
             let fiveDayArray = await []
@@ -34,9 +40,10 @@ function Weather() {
             const fiveDayRes = await API.getFiveDay(searchRes.data.coord.lat, searchRes.data.coord.lon)
             // need a systematic comparison of browser time to array time
             for (let index of fiveDayRes.data.list) {
-
+                console.log(index)
                 fiveDayArray.push(
                     {
+                        key: index.dt,
                         time: index.dt_txt,
                         temp: index.main.temp
                     }
@@ -80,13 +87,19 @@ function Weather() {
                         onChange={(event, value) => setSearch(document.getElementById("citySearch").value)} />
                     <button onClick={handleSubmit}>Search Cities</button>
                     <Grid container spacing={1}>
+                        {/* need a button to be able to click and search previous */}
                         {searched.length ? (
                             <div>
                                 {
                                     searched.map(x =>
-                                        <li>
-                                            {x.name}
-                                        </li>
+                                        <div>
+                                            <li>
+                                                {x.name}
+                                                <button
+                                                    name={x.name}
+                                                    onClick={handleDelete}>Delete</button>
+                                            </li>
+                                        </div>
                                     )
                                 }
                             </div>
@@ -117,7 +130,7 @@ function Weather() {
                         {weather.fiveDay.length ? (
                             weather.fiveDay.map(y => (
                                 <Grid item xs={2}>
-                                    <Card>
+                                    <Card key={y.key}>
                                         <p>{y.time}</p>
                                         <p>{y.temp}</p>
                                     </Card>
